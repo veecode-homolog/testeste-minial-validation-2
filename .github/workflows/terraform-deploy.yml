@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  PORT: 6550
+  PORT: 6550 
   USERNAME: ec2-user
   CLUSTER_NAME: testeste-minial-validation-2
   SERVICE_ACCOUNT_NAMESPACE: ${{ github.repository_owner }}
