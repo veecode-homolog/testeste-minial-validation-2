@@ -9,23 +9,24 @@ metadata:
     certificate_account_email: platformss@vee.codes
     certificate_environment_type: staging
     grafana_obs_api: https://grafana.apr.platform.vee.codes
+    public_ip: 52.7.226.9
   annotations:
     backstage.io/kubernetes-id: "testeste-minial-validation-2"
     github.com/project-slug: veecode-homolog/testeste-minial-validation-2
     grafana/dashboard-selector: testeste-minial-validation-2
-    grafana/alert-label-selector: "alertname=testeste-minial-validation-2" 
+    grafana/alert-label-selector: "alertname=testeste-minial-validation-2"
     backstage.io/techdocs-ref: dir:..
-    github.com/workflows: terraform-deploy.yml,start-instance.yml,stop-instance.yml,kubeconfig.yml,terraform-destroy.yml   
-    cluster/instructions: |
-      ssh -i ./key-pair.pem -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} 
-      "mkdir -p .kube && k3d kubeconfig get ${CLUSTER_NAME} > ~/.kube/config"
-      scp -i ./key-pair.pem ${EC2_USER}@${EC2_HOST}:~/.kube/config ./config
-      yq e 'del(.clusters[0].cluster.certificate-authority-data)' -i ~/.kube/config
-      yq e '.clusters[0].cluster.insecure-skip-tls-verify=true' config -i
-      yq e '.clusters[0].cluster.server = "https://${EC2_HOST}:38517"' config -i
+    github.com/workflows: terraform-deploy.yml,start-instance.yml,stop-instance.yml,kubeconfig.yml,terraform-destroy.yml
+    cluster/instructions: "# Run the following commands to import the kubeconfig:\n  ssh -i ./cert.pem -o StrictHostKeyChecking=no $USERNAME@$52.7.226.9 \"mkdir -p .kube && k3d kubeconfig get k3s > ~/.kube/config\"\n  scp -i ./cert.pem $USERNAME@$52.7.226.9:~/.kube/config ~/.kube/config-testeste-minial-validation-2\n  yq -e 'del(.clusters[0].cluster.certificate-authority-data) | .clusters[0].cluster.insecure-skip-tls-verify=true | .clusters[].cluster.server |= sub(\"0.0.0.0\", \"52.7.226.9\")' -i ~/.kube/config-testeste-minial-validation-2\n  export KUBECONFIG=~/.kube/config-testeste-minial-validation-2\n  kubectl get pods -A\n"
+    veecode/cluster-name: testeste-minial-validation-2
+    kubernetes.io/secret-name: testeste-minial-validation-2-secret
+    kubernetes.io/secret-namespace: veecode-homolog
+    kubernetes.io/auth-provider: custom
+    kubernetes.io/api-server: https://52.7.226.9:6550
+    kubernetes.io/skip-tls-verify: "true"
+    kubernetes.io/skip-metrics-lookup: "false"
 spec:
   type: ec2
   lifecycle: experimental
   owner: "group:default/admin"
   environment: 'environment:default/platform_homolog_environment'
-  
