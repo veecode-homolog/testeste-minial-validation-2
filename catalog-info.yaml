@@ -1,0 +1,8 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: testeste-minial-validation-2-location
+  description: Location to import all testeste-minial-validation-2 catalog components
+spec:
+  targets:
+    - ./.platform/*.yaml
